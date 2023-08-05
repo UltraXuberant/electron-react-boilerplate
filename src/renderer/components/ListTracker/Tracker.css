@@ -1,0 +1,85 @@
+.Container {
+  margin: 8px;
+  border: 2px solid lightgrey;
+  border-radius: 8px;
+  /* min-width: 80%; */
+  min-width: 700px;
+  position: relative;
+}
+
+.MobContainer {
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  height: 10%;
+  background-color: black;
+}
+
+.MobDraggable {
+  margin: 2px 8px 8px 8px;
+  border: 1px solid lightgrey;
+  border-radius: 8px;
+}
+
+.Title {
+  padding: 8px;
+  text-align: center;
+}
+
+.MobDisplay {
+  display: flex;
+  /* align-items: center; */
+  padding: 2px;
+}
+
+.Headers {
+  display: flex;
+  margin: 0px 8px 0px 8px;
+  padding: 3px;
+  align-items: center;
+  /* padding: 2px; */
+  /* border: 1px solid; */
+}
+
+.MobDisplay > span,
+.MobDisplay > div,
+.Headers > span {
+  /* border: 1px solid lightgray; */
+  padding: 2px;
+  margin: 2px;
+}
+
+.Initiative {
+  width: 12%;
+  text-align: center;
+}
+
+.InitiativeBlock {
+}
+
+.Name {
+  /* text-align: left; */
+  width: 20%;
+}
+
+.NameBlock {
+  font-size: large;
+  font-weight: 600;
+}
+
+.Health {
+  width: 15%;
+  text-align: center;
+}
+
+.HealthContainer {
+  display: flex;
+}
+
+.HealthBlock {
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  margin: 0px 4px;
+  background-color: rgba(255, 255, 255, 0.25);
+}
