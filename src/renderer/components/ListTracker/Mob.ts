@@ -1,10 +1,12 @@
 interface IMob {
+  Identifier: number;
   Name: string;
-  Initiative?: number;
-  MaxHealth?: number;
-  Health?: number;
-  DisplayHealth?: string;
-  DisplayMaxHealth?: string;
+  Initiative: number;
+  InitiativeBonus: number | undefined;
+  MaxHealth: number;
+  Health: number;
+  DisplayHealth: string;
+  DisplayMaxHealth: string;
 }
 
 export function CompareMob(a: IMob, b: IMob) {
@@ -12,36 +14,40 @@ export function CompareMob(a: IMob, b: IMob) {
     return 0;
   }
 
-  if (a.Initiative === undefined || a.Initiative === null) {
-    return 1;
-  }
-
-  if (b.Initiative === undefined || a.Initiative === null) {
-    return -1;
-  }
-
   return a.Initiative < b.Initiative ? 1 : -1;
 }
 
 export class Mob implements IMob {
+  Identifier: number;
+
   Name: string;
 
-  Initiative?: number | undefined;
+  Initiative: number;
 
-  MaxHealth?: number | undefined;
+  InitiativeBonus: number | undefined;
 
-  Health?: number | undefined;
+  MaxHealth: number;
 
-  DisplayHealth?: string | undefined;
+  Health: number;
 
-  DisplayMaxHealth?: string | undefined;
+  DisplayHealth: string;
 
-  constructor(name: string, initiative?: number, maxHealth?: number) {
+  DisplayMaxHealth: string;
+
+  constructor(
+    Identifier: number,
+    name: string,
+    initiative: number,
+    maxHealth: number,
+    initiativeBonus: number | undefined = undefined
+  ) {
+    this.Identifier = Identifier;
     this.Name = name;
     this.Initiative = initiative;
+    this.InitiativeBonus = initiativeBonus;
     this.MaxHealth = maxHealth;
     this.Health = maxHealth;
-    this.DisplayHealth = maxHealth?.toString();
+    this.DisplayHealth = maxHealth.toString();
     this.DisplayMaxHealth = this.DisplayHealth;
   }
 }
