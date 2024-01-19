@@ -14,7 +14,7 @@ import './Tracker.css';
 // #region functions
 function CalculateNewHealth(
   health: number | undefined,
-  displayHealth: string | undefined
+  displayHealth: string | undefined,
 ) {
   let newHealth: number;
   let sign: string = '';
@@ -115,7 +115,7 @@ function InitiativeList() {
     initiative: number,
     initiativeBonus: number | undefined,
     hp: number,
-    identifier?: number
+    identifier?: number,
   ) => {
     const newMobs = Array.from(mobs);
     if (identifier) {
@@ -125,7 +125,7 @@ function InitiativeList() {
         name,
         initiative,
         hp,
-        initiativeBonus
+        initiativeBonus,
       );
     } else {
       newMobs.push(new Mob(nextIndex, name, initiative, hp, initiativeBonus));
@@ -165,7 +165,7 @@ function InitiativeList() {
 
     const updatedHealth: number = CalculateNewHealth(
       newMobs[index].Health,
-      newMobs[index].DisplayHealth
+      newMobs[index].DisplayHealth,
     );
 
     newMobs[index].Health = updatedHealth;
@@ -198,7 +198,7 @@ function InitiativeList() {
 
     const updatedHealth: number = CalculateNewHealth(
       newMobs[index].MaxHealth,
-      newMobs[index].DisplayMaxHealth
+      newMobs[index].DisplayMaxHealth,
     );
 
     newMobs[index].MaxHealth = updatedHealth;
@@ -248,6 +248,15 @@ function InitiativeList() {
             className="MainButtons"
           >
             Roll Initiative
+          </button>
+          <button
+            onClick={() => {
+              console.log(window.electron.store.get('foo'));
+            }}
+            type="button"
+            className="MainButtons"
+          >
+            Catalog
           </button>
         </div>
 
