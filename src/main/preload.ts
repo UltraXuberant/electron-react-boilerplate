@@ -22,6 +22,23 @@ const electronHandler = {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
     },
   },
+  store: {
+    get(key: string) {
+      return ipcRenderer.sendSync('electron-store-get', key);
+    },
+    set(property: string, val: any) {
+      ipcRenderer.send('electron-store-set', property, val);
+    },
+    has(key: string) {
+      return ipcRenderer.sendSync('electron-store-has', key);
+    },
+    delete(key: string) {
+      ipcRenderer.sendSync('electron-store-delete', key);
+    },
+    reset(key: string) {
+      ipcRenderer.sendSync('electron-store-reset', key);
+    },
+  },
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);

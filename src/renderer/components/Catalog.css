@@ -1,0 +1,20 @@
+.CatalogModal {
+  background-color: rgba(100, 100, 100, 0.9);
+  padding: 15px;
+  width: 500px;
+  border-radius: 10px;
+  border-color: black;
+  /* margin: 10px; */
+}
+
+.CatalogModal > .close {
+  position: absolute;
+  display: block;
+  right: -10px;
+  top: -10px;
+  padding: 2px 5px;
+  line-height: 20px;
+  font-size: 24px;
+  border-radius: 18px;
+  /* border: 1px solid #cfcece; */
+}

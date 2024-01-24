@@ -14,6 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import Store from 'electron-store';
 
 class AppUpdater {
   constructor() {
@@ -29,6 +30,32 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+});
+
+// const mobSchema = {
+//   type: 'object',
+//   properties: {
+//     name: { type: 'string' },
+//     maxHealth: { type: 'number' },
+//     initiative: { type: 'number' },
+//     initiativeBonus: { type: 'number' },
+//   },
+// };
+const store = new Store();
+ipcMain.on('electron-store-get', async (event, val) => {
+  event.returnValue = store.get(val);
+});
+ipcMain.on('electron-store-set', async (event, key, val) => {
+  store.set(key, val);
+});
+ipcMain.on('electron-store-has', async (event, key) => {
+  event.returnValue = store.has(key);
+});
+ipcMain.on('electron-store-delete', async (event, key) => {
+  store.delete(key);
+});
+ipcMain.on('electron-store-reset', async (event, key) => {
+  store.reset(key);
 });
 
 if (process.env.NODE_ENV === 'production') {
