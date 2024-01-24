@@ -14,12 +14,30 @@ interface IAddMob {
     initiative: number,
     initiativeBonus: number | undefined,
     hp: number,
-    identifier?: number
+    identifier?: number,
+  ): void;
+  storeMob(
+    oldName: string,
+    newName: string,
+    hp: number,
+    initiative: number,
+    initiativeBonus: number | undefined,
   ): void;
 }
 
-function checkNameValidity(name: string): boolean {
-  return name !== '';
+function checkNameValidity(name: string): string {
+  // return name !== '' && name.length < 15;
+  if (name === '') {
+    return 'Enter a name.';
+  }
+  if (name.length > 15) {
+    return 'Name is too long.';
+  }
+  return '';
+}
+
+function checkNameValidityBool(name: string): boolean {
+  return name === '';
 }
 
 function AddMob({
@@ -28,6 +46,7 @@ function AddMob({
   setEditingMob,
   editingMob,
   addMob,
+  storeMob,
 }: IAddMob) {
   const ref = useRef<PopupActions>(null);
 
@@ -35,18 +54,23 @@ function AddMob({
   const [mobInitiative, setMobInitiative] = useState(0);
   const [mobHp, setMobHp] = useState(0);
   const [mobInitBonus, setMobInitBonus] = useState<number | undefined>(
-    undefined
+    undefined,
   );
+  const [oldName, setOldName] = useState('');
 
-  const [validName, setValidName] = useState(checkNameValidity(mobName));
+  const [nameError, setNameError] = useState(checkNameValidity(mobName));
+  const [validName, setValidName] = useState(checkNameValidityBool(nameError));
 
   const onNameChange = (name: string) => {
     const newName = name.trimStart();
     setMobName(newName);
-    setValidName(checkNameValidity(newName));
+    let tempNameError = checkNameValidity(newName);
+    setNameError(tempNameError);
+    setValidName(checkNameValidityBool(tempNameError));
   };
 
   const closingModal = () => {
+    setOldName('');
     setMobName('');
     setMobInitiative(0);
     setMobInitBonus(undefined);
@@ -58,6 +82,7 @@ function AddMob({
 
   const onOpen = () => {
     if (editingMob !== null) {
+      setOldName(editingMob.Name);
       setMobName(editingMob.Name);
       setMobInitiative(editingMob.Initiative ?? 0);
       setMobHp(editingMob.MaxHealth ?? 0);
@@ -147,7 +172,7 @@ function AddMob({
           <button
             type="submit"
             className="SubmitMob"
-            title={validName ? '' : 'Please enter a name'}
+            title={validName ? '' : nameError}
             disabled={!validName}
             onClick={() =>
               addMob(
@@ -155,11 +180,22 @@ function AddMob({
                 mobInitiative,
                 mobInitBonus,
                 mobHp,
-                editingMob?.Identifier
+                editingMob?.Identifier,
               )
             }
           >
-            Create Mob
+            {editingMob !== null ? 'Save Mob' : 'Create Mob'}
+          </button>
+          <button
+            type="submit"
+            className="SubmitMob"
+            title={validName ? '' : nameError}
+            disabled={!validName}
+            onClick={() =>
+              storeMob(oldName, mobName, mobHp, mobInitiative, mobInitBonus)
+            }
+          >
+            Store Mob
           </button>
         </div>
       </div>

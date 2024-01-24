@@ -9,7 +9,10 @@ import {
 import { Mob, CompareMob } from './Mob';
 import AddMob from '../AddMob';
 import MobDisplay from './MobDisplay';
+import MobCatalog from '../MobCatalog';
 import './Tracker.css';
+
+// playerSchema
 
 // #region functions
 function CalculateNewHealth(
@@ -65,10 +68,14 @@ function InitiativeList() {
     new Mob(3, 'cat', 12, 2),
   ];
 
+  const altInitBonus = -99;
+  const store = window.electron.store;
+  const basePlayerPath = 'players';
   const [mobs, setMobs] = useState(players);
   const [editingMob, setEditingMob] = useState<Mob | null>(null);
   const [editPopupOpen, setEditPopupOpen] = useState(false);
   const [nextIndex, setNextIndex] = useState(4);
+  const [mobCatalogOpen, setMobCatalogOpen] = useState(false);
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source } = result;
@@ -125,7 +132,7 @@ function InitiativeList() {
         name,
         initiative,
         hp,
-        initiativeBonus,
+        initiativeBonus ?? undefined,
       );
     } else {
       newMobs.push(new Mob(nextIndex, name, initiative, hp, initiativeBonus));
@@ -146,6 +153,28 @@ function InitiativeList() {
     const newMobs = oldMobs.filter((mob) => mob.Identifier !== identifier);
 
     setMobs(newMobs);
+  };
+
+  function makePlayerPath(name: string): string {
+    return basePlayerPath + '.' + name;
+  }
+
+  const storeMob = (
+    oldName: string,
+    newName: string,
+    hp: number,
+    initiative: number,
+    initiativeBonus: number | undefined,
+  ) => {
+    const oldPath = makePlayerPath(oldName);
+    // if (oldName !== newName && store.has(oldPath)) {
+    //   store.delete(oldPath);
+    // }
+    store.set(makePlayerPath(newName), {
+      health: hp,
+      initiative: initiative,
+      initiativeBonus: initiativeBonus ?? undefined,
+    });
   };
 
   // #region Health
@@ -240,6 +269,7 @@ function InitiativeList() {
               setEditingMob={setEditingMob}
               editingMob={editingMob}
               addMob={addMob}
+              storeMob={storeMob}
             />
           </div>
           <button
@@ -249,14 +279,31 @@ function InitiativeList() {
           >
             Roll Initiative
           </button>
+          <div>
+            <button
+              onClick={() => {
+                setMobCatalogOpen(true);
+              }}
+              type="button"
+              className="MainButtons"
+            >
+              Catalog
+            </button>
+            <MobCatalog
+              basePlayerPath={basePlayerPath}
+              mobCatalogOpen={mobCatalogOpen}
+              setMobCatalogOpen={setMobCatalogOpen}
+              addMob={addMob}
+            />
+          </div>
           <button
             onClick={() => {
-              console.log(window.electron.store.get('foo'));
+              console.log(store.delete(makePlayerPath('dog')));
             }}
             type="button"
             className="MainButtons"
           >
-            Catalog
+            Delete
           </button>
         </div>
 

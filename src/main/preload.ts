@@ -29,6 +29,15 @@ const electronHandler = {
     set(property: string, val: any) {
       ipcRenderer.send('electron-store-set', property, val);
     },
+    has(key: string) {
+      return ipcRenderer.sendSync('electron-store-has', key);
+    },
+    delete(key: string) {
+      ipcRenderer.sendSync('electron-store-delete', key);
+    },
+    reset(key: string) {
+      ipcRenderer.sendSync('electron-store-reset', key);
+    },
   },
 };
 

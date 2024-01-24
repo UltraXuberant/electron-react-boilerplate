@@ -39,7 +39,7 @@ export class Mob implements IMob {
     name: string,
     initiative: number,
     maxHealth: number,
-    initiativeBonus: number | undefined = undefined
+    initiativeBonus: number | undefined = undefined,
   ) {
     this.Identifier = Identifier;
     this.Name = name;
